@@ -1,0 +1,3 @@
+/home/arsen/cppprojects/LongNumber/cmake-build-debug/CMakeFiles/LongNumber.dir
+/home/arsen/cppprojects/LongNumber/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/arsen/cppprojects/LongNumber/cmake-build-debug/CMakeFiles/rebuild_cache.dir
