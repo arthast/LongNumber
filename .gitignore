@@ -1,4 +1,4 @@
 **/.exe
 **/cmake-build-debug
 **/.git
-**/.idea
+.idea
