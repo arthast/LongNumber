@@ -191,8 +191,8 @@ LongNumber operator-(const LongNumber &left, const LongNumber &right) {
 LongNumber operator*(const LongNumber &left, const LongNumber &right) {
     if (left.sign && right.sign) return -right * -left;
 
-    if (left.integer.size() + left.fractional.size() < right.integer.size() + right.fractional.size())
-        return right * left;
+    int zerosInFractional = ((left.fractional.size() == 1 && left.fractional.back() == 0) &&
+        (right.fractional.size() == 1 && right.fractional.back() == 0));
 
     int intSize = static_cast<int>(left.integer.size() + right.integer.size());
     int fracSize = static_cast<int>(left.fractional.size() + right.fractional.size());
@@ -219,7 +219,7 @@ LongNumber operator*(const LongNumber &left, const LongNumber &right) {
         }
 
         for (int j = 0; j < static_cast<int>(left.integer.size()); j++) {
-            result[i + j + fracSize - 1] += right.integer[i] * left.integer[j];
+            result[i + j + fracSize] += right.integer[i] * left.integer[j];
         }
     }
 
@@ -232,6 +232,7 @@ LongNumber operator*(const LongNumber &left, const LongNumber &right) {
 
     LongNumber composition;
     composition.sign = (left.sign || right.sign);
+    composition.fractional.pop_back();
 
     for (int i = fracSize - 1; i >= 0; i--) {
         composition.fractional.push_back(result[i]);
@@ -299,23 +300,23 @@ LongNumber operator/(const LongNumber &left, const LongNumber &right) {
     return r;
 }
 
-LongNumber& LongNumber::operator+=(const LongNumber &other) {
+LongNumber &LongNumber::operator+=(const LongNumber &other) {
     return (*this = *this + other);
 }
 
-LongNumber& LongNumber::operator-=(const LongNumber &other) {
+LongNumber &LongNumber::operator-=(const LongNumber &other) {
     return (*this = *this - other);
 }
 
-LongNumber& LongNumber::operator*=(const LongNumber &other) {
+LongNumber &LongNumber::operator*=(const LongNumber &other) {
     return (*this = *this * other);
 }
 
-LongNumber& LongNumber::operator/=(const LongNumber &other) {
+LongNumber &LongNumber::operator/=(const LongNumber &other) {
     return (*this = *this / other);
 }
 
-LongNumber operator ""_longnum(const char* string) {
+LongNumber operator ""_f(const char *string) {
     return LongNumber(string);
 }
 
@@ -337,10 +338,17 @@ std::ostream &operator<<(std::ostream &os, const LongNumber &number) {
     return os;
 }
 
+std::istream &operator>>(std::istream &is, LongNumber &number) {
+    std::string s;
+    is >> s;
+    number = LongNumber(s);
+    return is;
+}
+
 
 int main() {
     //LongNumber number("100.1"), number2("10");
-    LongNumber number("10.01101"), number2("10");
+    LongNumber number("100.1"), number2("100.1");
     std::cout << (number * number2);
     return 0;
 }

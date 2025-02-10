@@ -45,6 +45,7 @@ public:
 
         integer.push_back(false);
         deleteZeros();
+        normalize();
     }
 
     // Copy constructor
@@ -89,6 +90,9 @@ public:
                 fractional.pop_back();
             precision = 100;
         }
+
+        if (integer.size() == 1 && integer.back() == 0 && fractional.size() == 1 && fractional.back() == 0)
+            sign = false;
     }
 
     // Cast to string
@@ -155,9 +159,7 @@ public:
 
     friend std::ostream &operator<<(std::ostream &os, const LongNumber &number);
 
-    LongNumber operator ""_longnum(const char*);
-
     friend LongNumber rightShift(const LongNumber &number);
 };
-
+LongNumber operator ""_f(const char*);
 #endif //LONGNUMBER_LIBRARY_H
