@@ -16,7 +16,7 @@ public:
     // Constructors
     LongNumber() = default;
 
-    explicit LongNumber(const std::string &number) {
+    void convertFromString(const std::string &number) {
         int end = 0;
         if (number[0] == '-' || number[0] == '+') {
             sign = number[0] == '-';
@@ -47,6 +47,43 @@ public:
         deleteZeros();
         normalize();
     }
+
+    explicit LongNumber(const std::string &number) {
+        convertFromString(number);
+    }
+
+    explicit LongNumber(long double number) {
+        std::string binary;
+
+        if (number < 0) {
+            binary = "-";
+            number *= -1;
+        }
+
+        long long intPart = static_cast<long long>(number);
+        long double fracPart = number - intPart;
+        while (intPart != 0) {
+            binary += static_cast<char>((intPart % 2) + '0');
+            intPart /= 2;
+        }
+        std::ranges::reverse(binary);
+        binary += '.';
+
+        int cnt = 0;
+        while (cnt < 300 && fracPart != 0) {
+            fracPart *= 2;
+            binary += static_cast<char>((fracPart >= 1) + '0');
+            fracPart -= fracPart >= 1;
+            cnt++;
+        }
+        convertFromString(binary);
+    }
+
+    explicit LongNumber(long long number) : LongNumber(static_cast<long double>(number)) {}
+    explicit LongNumber(int number) : LongNumber(static_cast<long double>(number)) {}
+    explicit LongNumber(unsigned int number) : LongNumber(static_cast<long double>(number)) {}
+    explicit LongNumber(double number) : LongNumber(static_cast<long double>(number)) {}
+
 
     // Copy constructor
     LongNumber(const LongNumber &other) {
@@ -85,14 +122,23 @@ public:
     }
 
     void normalize() {
-        if (precision > 100) {
-            for (int i = 100; i < precision; i++)
+        if (precision > 300) {
+            for (int i = 300; i < precision; i++)
                 fractional.pop_back();
-            precision = 100;
+            precision = 300;
+        }
+
+        while (fractional.size() > precision) {
+            fractional.pop_back();
         }
 
         if (integer.size() == 1 && integer.back() == 0 && fractional.size() == 1 && fractional.back() == 0)
             sign = false;
+    }
+
+    void setPrecision(const unsigned int newPrecision) {
+        precision = newPrecision;
+        normalize();
     }
 
     // Cast to string
@@ -114,7 +160,7 @@ public:
     }
 
     void makeEpsilon() {
-        const unsigned int accuracy = std::max(precision, 100u);
+        const unsigned int accuracy = std::max(precision, 300u);
         integer.push_back(false);
 
         for (int i = 0; i < accuracy; i++) {
@@ -161,5 +207,6 @@ public:
 
     friend LongNumber rightShift(const LongNumber &number);
 };
-LongNumber operator ""_f(const char*);
+
+LongNumber operator ""_f(const char *);
 #endif //LONGNUMBER_LIBRARY_H

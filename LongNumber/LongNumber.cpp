@@ -1,4 +1,5 @@
 #include "LongNumber.hpp"
+#include <chrono>
 
 LongNumber LongNumber::operator+() const {
     return *this;
@@ -191,9 +192,6 @@ LongNumber operator-(const LongNumber &left, const LongNumber &right) {
 LongNumber operator*(const LongNumber &left, const LongNumber &right) {
     if (left.sign && right.sign) return -right * -left;
 
-    int zerosInFractional = ((left.fractional.size() == 1 && left.fractional.back() == 0) &&
-        (right.fractional.size() == 1 && right.fractional.back() == 0));
-
     int intSize = static_cast<int>(left.integer.size() + right.integer.size());
     int fracSize = static_cast<int>(left.fractional.size() + right.fractional.size());
     int maxSize = intSize + fracSize;
@@ -242,8 +240,9 @@ LongNumber operator*(const LongNumber &left, const LongNumber &right) {
         composition.integer.push_back(result[i]);
     }
 
+    composition.precision = std::max(left.fractional.size(), right.fractional.size());
+    composition.normalize();
     composition.deleteZeros();
-    composition.precision = fracSize;
 
     return composition;
 }
@@ -281,7 +280,7 @@ LongNumber operator/(const LongNumber &left, const LongNumber &right) {
 
     if (left.sign && right.sign) return -right / -left;
 
-    LongNumber l = min(left, right) - LongNumber("1");
+    LongNumber l = -(max(left, right) + LongNumber("1"));
     LongNumber r = max(left, right) + LongNumber("1");
     LongNumber eps;
     eps.makeEpsilon();
@@ -348,7 +347,11 @@ std::istream &operator>>(std::istream &is, LongNumber &number) {
 
 int main() {
     //LongNumber number("100.1"), number2("10");
-    LongNumber number("100.1"), number2("100.1");
+    auto start_time = std::chrono::high_resolution_clock::now();
+    LongNumber number(128), number2(2), number3("1100.0");
     std::cout << (number * number2);
+    // auto end_time = std::chrono::high_resolution_clock::now();
+    // std::chrono::duration<double> duration = end_time - start_time;
+    // std::cout << '\n' << duration.count() ;
     return 0;
 }
