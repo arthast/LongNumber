@@ -42,6 +42,13 @@
     <option name="formatViaClangd" value="false" />
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="CMakeLists.txt" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -348,7 +355,7 @@
       <workItem from="1739132379482" duration="766000" />
       <workItem from="1739257554169" duration="341000" />
       <workItem from="1739533914037" duration="1611000" />
-      <workItem from="1739535719812" duration="6431000" />
+      <workItem from="1739535719812" duration="6811000" />
     </task>
     <servers />
   </component>
