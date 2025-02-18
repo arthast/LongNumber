@@ -13,6 +13,6 @@ add_executable(tests
         my_tests/binary_dev_test.cpp
         my_tests/binary_sub_test.cpp)
 enable_testing()
-add_executable(main main.cpp)
-target_link_libraries(main LongNumber)
+add_executable(pi main.cpp)
+target_link_libraries(pi LongNumber)
 target_link_libraries(tests LongNumber gtest gtest_main)
