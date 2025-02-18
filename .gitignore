@@ -2,5 +2,10 @@
 **/cmake-build-debug
 **/.git
 **/.idea
-.idea
-.idea/**
+.idea/
+.idea/*
+.idea/workspace.xml
+*.exe
+*.out
+*.o
+
