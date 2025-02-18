@@ -1,0 +1,1 @@
+/usr/bin/c++ -rdynamic CMakeFiles/pi.dir/main.cpp.o -o pi  -Wl,-rpath,/home/arsen/cppprojects/LongNumber/build/src src/libLongNumber.so 

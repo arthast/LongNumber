@@ -1,5 +1,5 @@
 /home/arsen/cppprojects/LongNumber/build/CMakeFiles/tests.dir
-/home/arsen/cppprojects/LongNumber/build/CMakeFiles/main.dir
+/home/arsen/cppprojects/LongNumber/build/CMakeFiles/pi.dir
 /home/arsen/cppprojects/LongNumber/build/CMakeFiles/test.dir
 /home/arsen/cppprojects/LongNumber/build/CMakeFiles/edit_cache.dir
 /home/arsen/cppprojects/LongNumber/build/CMakeFiles/rebuild_cache.dir

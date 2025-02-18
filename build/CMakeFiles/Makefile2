@@ -64,7 +64,7 @@ CMAKE_BINARY_DIR = /home/arsen/cppprojects/LongNumber/build
 
 # The main recursive "all" target.
 all: CMakeFiles/tests.dir/all
-all: CMakeFiles/main.dir/all
+all: CMakeFiles/pi.dir/all
 all: src/all
 all: googletest/all
 .PHONY : all
@@ -76,7 +76,7 @@ preinstall: googletest/preinstall
 
 # The main recursive "clean" target.
 clean: CMakeFiles/tests.dir/clean
-clean: CMakeFiles/main.dir/clean
+clean: CMakeFiles/pi.dir/clean
 clean: src/clean
 clean: googletest/clean
 .PHONY : clean
@@ -176,30 +176,30 @@ CMakeFiles/tests.dir/clean:
 .PHONY : CMakeFiles/tests.dir/clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/main.dir
+# Target rules for target CMakeFiles/pi.dir
 
 # All Build rule for target.
-CMakeFiles/main.dir/all: src/CMakeFiles/LongNumber.dir/all
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/arsen/cppprojects/LongNumber/build/CMakeFiles --progress-num=11,12 "Built target main"
-.PHONY : CMakeFiles/main.dir/all
+CMakeFiles/pi.dir/all: src/CMakeFiles/LongNumber.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/pi.dir/build.make CMakeFiles/pi.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/pi.dir/build.make CMakeFiles/pi.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/arsen/cppprojects/LongNumber/build/CMakeFiles --progress-num=11,12 "Built target pi"
+.PHONY : CMakeFiles/pi.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/main.dir/rule: cmake_check_build_system
+CMakeFiles/pi.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/arsen/cppprojects/LongNumber/build/CMakeFiles 4
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/main.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/pi.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/arsen/cppprojects/LongNumber/build/CMakeFiles 0
-.PHONY : CMakeFiles/main.dir/rule
+.PHONY : CMakeFiles/pi.dir/rule
 
 # Convenience name for target.
-main: CMakeFiles/main.dir/rule
-.PHONY : main
+pi: CMakeFiles/pi.dir/rule
+.PHONY : pi
 
 # clean rule for target.
-CMakeFiles/main.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/clean
-.PHONY : CMakeFiles/main.dir/clean
+CMakeFiles/pi.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/pi.dir/build.make CMakeFiles/pi.dir/clean
+.PHONY : CMakeFiles/pi.dir/clean
 
 #=============================================================================
 # Target rules for target src/CMakeFiles/LongNumber.dir
