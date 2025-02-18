@@ -1,3 +1,2 @@
 add_library(LongNumber SHARED LongNumber.cpp)
-
 target_include_directories(LongNumber PUBLIC LongNumber)

@@ -1,20 +1,17 @@
-cmake_minimum_required(VERSION 3.28)
+cmake_minimum_required(VERSION 3.0)
 project(LongNumber)
 find_package(GTest)
 
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED True)
-
-add_subdirectory(googleTests)
-add_subdirectory(LongNumber)
+set(CMAKE_CXX_STANDARD 17)
+add_subdirectory(src)
+add_subdirectory(googletest)
 include(GoogleTest)
-
 add_executable(tests
-        my_tests/divide_tests.cpp
-        my_tests/mult_tests.cpp
-        my_tests/plus_tests.cpp
-        my_tests/sub_tests.cpp
-        my_tests/comp.cpp)
+        my_tests/bool_test.cpp
+        my_tests/binary_mult_test.cpp
+        my_tests/binary_plus_test.cpp
+        my_tests/binary_dev_test.cpp
+        my_tests/binary_sub_test.cpp)
 enable_testing()
 add_executable(main main.cpp)
 target_link_libraries(main LongNumber)

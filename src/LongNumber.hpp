@@ -5,10 +5,12 @@
 #include <iostream>
 #include <vector>
 
+inline unsigned ACCURACY = 20;
+
 class LongNumber {
 private:
-    std::vector<bool> integer = {};
-    std::vector<bool> fractional = {false};
+    std::vector<char> integer = {};
+    std::vector<char> fractional = {false};
     unsigned int precision = 1;
     bool sign = false;
 
@@ -33,7 +35,7 @@ public:
                 size_t index = dotPosition + number.size() - CurrentIndex--;
                 fractional.push_back(number[index] == '1');
             }
-            precision = std::max(static_cast<unsigned int>(fractional.size()), precision);
+            precision = std::max(static_cast<unsigned>(fractional.size()), precision);
         }
 
         if (dotPosition != std::string::npos) CurrentIndex--;
@@ -66,15 +68,33 @@ public:
             binary += static_cast<char>((intPart % 2) + '0');
             intPart /= 2;
         }
-        std::ranges::reverse(binary);
-        binary += '.';
+        std::reverse(binary.begin() + (binary[0] == '-'), binary.end());
+        if (fracPart > 0) {
+            binary += '.';
+        }
 
         int cnt = 0;
-        while (cnt < 300 && fracPart != 0) {
+        while (cnt <= ACCURACY && fracPart != 0) {
             fracPart *= 2;
             binary += static_cast<char>((fracPart >= 1) + '0');
             fracPart -= fracPart >= 1;
             cnt++;
+        }
+
+        if (cnt > ACCURACY) {
+            int prev = binary[binary.size() - 1] - '0';
+            binary.pop_back();
+            for (int i = static_cast<int>(binary.size()) - 1; i >= 0; i--) {
+                if (binary[i] == '.') continue;
+                if (binary[i] == '1') {
+                    if (prev == '1')
+                        binary[i] = '0';
+                } else {
+                    binary[i] = prev ? '1' : '0';
+                    prev = 0;
+                }
+            }
+            binary.insert(binary.begin(), prev + '0');
         }
         convertFromString(binary);
     }
@@ -105,7 +125,7 @@ public:
     // Destructor
     ~LongNumber() = default;
 
-    void deleteZeros() {
+    LongNumber& deleteZeros() {
         while (integer.size() > 1 && integer.back() == 0) {
             integer.pop_back();
         }
@@ -119,15 +139,10 @@ public:
             fractional.push_back(false);
 
         precision = fractional.size();
+        return *this;
     }
 
     void normalize() {
-        if (precision > 300) {
-            for (int i = 300; i < precision; i++)
-                fractional.pop_back();
-            precision = 300;
-        }
-
         while (fractional.size() > precision) {
             fractional.pop_back();
         }
@@ -138,7 +153,10 @@ public:
 
     void setPrecision(const unsigned int newPrecision) {
         precision = newPrecision;
-        normalize();
+    }
+
+    unsigned int getPrecision() const {
+        return precision;
     }
 
     // Cast to string
@@ -157,16 +175,6 @@ public:
             result += static_cast<char>(digit + '0');
 
         return result;
-    }
-
-    void makeEpsilon() {
-        const unsigned int accuracy = std::max(precision, 300u);
-        integer.push_back(false);
-
-        for (int i = 0; i < accuracy; i++) {
-            fractional.push_back(false);
-        }
-        fractional.push_back(true);
     }
 
     LongNumber operator-() const;
@@ -205,8 +213,8 @@ public:
 
     friend std::ostream &operator<<(std::ostream &os, const LongNumber &number);
 
-    friend LongNumber rightShift(const LongNumber &number);
+    friend LongNumber rightShift(const LongNumber &number, unsigned int maxPrecision);
 };
 
-LongNumber operator ""_f(const char *);
+LongNumber operator ""_longnumber(const char *);
 #endif //LONGNUMBER_LIBRARY_H

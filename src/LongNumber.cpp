@@ -97,17 +97,17 @@ LongNumber operator+(const LongNumber &left, const LongNumber &right) {
     n = std::min(left.fractional.size(), right.fractional.size());
 
     if (left.fractional.size() > right.fractional.size()) {
-        for (size_t i = left.fractional.size() - 1; i > n; i--) {
+        for (size_t i = left.fractional.size() - 1; i >= n; i--) {
             sum.fractional.push_back(left.fractional[i]);
         }
     } else if (right.fractional.size() > left.fractional.size()) {
-        for (size_t i = right.fractional.size() - 1; i > n; i--) {
+        for (size_t i = right.fractional.size() - 1; i >= n; i--) {
             sum.fractional.push_back(right.fractional[i]);
         }
     }
 
     next = false;
-    for (int i = static_cast<int>(n); i >= 0; i--) {
+    for (int i = static_cast<int>(n) - 1; i >= 0; i--) {
         int now = left.fractional[i] + right.fractional[i] + next;
         sum.fractional.push_back(now % 2);
         next = now / 2;
@@ -255,7 +255,7 @@ inline LongNumber max(const LongNumber &left, const LongNumber &right) {
     return left > right ? left : right;
 }
 
-LongNumber rightShift(const LongNumber &middle) {
+LongNumber rightShift(const LongNumber &middle, unsigned int maxPrecision) {
     LongNumber number = middle;
 
     bool temp = number.integer[0];
@@ -270,6 +270,8 @@ LongNumber rightShift(const LongNumber &middle) {
     }
     number.fractional[0] = temp;
     number.precision++;
+    number.precision = std::min(number.precision, maxPrecision);
+    number.normalize();
 
     return number;
 }
@@ -282,18 +284,19 @@ LongNumber operator/(const LongNumber &left, const LongNumber &right) {
 
     LongNumber l = -(max(left, right) + LongNumber("1"));
     LongNumber r = max(left, right) + LongNumber("1");
-    LongNumber eps;
-    eps.makeEpsilon();
+    int cnt = 0;
 
-    while (r - l > eps) {
-        LongNumber middle = rightShift(l + r);
+    unsigned maxPresicion = std::max({left.precision, right.precision, ACCURACY + 1});
+    while (cnt < 345) {
+        LongNumber middle = rightShift(l + r, maxPresicion);
         middle.deleteZeros();
         if ((middle * right) < left)
             l = middle;
         else
             r = middle;
+        cnt++;
     }
-
+    r.precision = ACCURACY;
     r.normalize();
     r.deleteZeros();
     return r;
@@ -315,7 +318,7 @@ LongNumber &LongNumber::operator/=(const LongNumber &other) {
     return (*this = *this / other);
 }
 
-LongNumber operator ""_f(const char *string) {
+LongNumber operator ""_longnumber(const char *string) {
     return LongNumber(string);
 }
 
@@ -344,14 +347,18 @@ std::istream &operator>>(std::istream &is, LongNumber &number) {
     return is;
 }
 
+void calc_PI(int n) {
+    LongNumber Pi(0);
+    LongNumber pow(1);
+    LongNumber sixten(16);
 
-int main() {
-    //LongNumber number("100.1"), number2("10");
-    auto start_time = std::chrono::high_resolution_clock::now();
-    LongNumber number(128), number2(2), number3("1100.0");
-    std::cout << (number * number2);
-    // auto end_time = std::chrono::high_resolution_clock::now();
-    // std::chrono::duration<double> duration = end_time - start_time;
-    // std::cout << '\n' << duration.count() ;
-    return 0;
+    for(int i = 0; i < n; i++) {
+        LongNumber num1((LongNumber(4) / LongNumber(8 * i + 1)));
+        LongNumber num2((LongNumber(2) / LongNumber(8 * i + 4)));
+        LongNumber num3((LongNumber(1) / LongNumber(8 * i + 5)));
+        LongNumber num4((LongNumber(1) / LongNumber(8 * i + 6)));
+        Pi += (num1 - num2 - num3 - num4) / pow;
+        pow *= sixten;
+    }
+    std::cout << Pi << '\n';
 }
