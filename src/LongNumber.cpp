@@ -347,18 +347,31 @@ std::istream &operator>>(std::istream &is, LongNumber &number) {
     return is;
 }
 
-void calc_PI(int n) {
-    LongNumber Pi(0);
-    LongNumber pow(1);
-    LongNumber sixten(16);
+void pii(unsigned int precision) {
+    ACCURACY = std::max(precision * 4, 12u);
+    LongNumber PI(0);
+    LongNumber pow{1};
+    LongNumber sixteen(16);
+    LongNumber eight(8);
 
-    for(int i = 0; i < n; i++) {
-        LongNumber num1((LongNumber(4) / LongNumber(8 * i + 1)));
-        LongNumber num2((LongNumber(2) / LongNumber(8 * i + 4)));
-        LongNumber num3((LongNumber(1) / LongNumber(8 * i + 5)));
-        LongNumber num4((LongNumber(1) / LongNumber(8 * i + 6)));
-        Pi += (num1 - num2 - num3 - num4) / pow;
-        pow *= sixten;
+    LongNumber fir(4), fir2(1);
+    LongNumber sec(2), sec2(4);
+    LongNumber third(1), third2(5);
+    LongNumber four(1), four2(6);
+
+    if (precision == 0) {
+        PI += LongNumber(3);
     }
-    std::cout << Pi << '\n';
+
+    for (int k = 0; k < precision; ++k) {
+        PI += pow * (fir / fir2 - sec / sec2 - third / third2 - four / four2);
+        pow /= sixteen;
+        fir2 += eight;
+        sec2 += eight;
+        third2 += eight;
+        four2 += eight;
+    }
+
+    std::cout << "My number PI: " << PI.toTen(precision) << '\n';
+    std::cout << "Number PI from Ethernet: " << NUMBER_PI.substr(0, precision + 2) << '\n';
 }

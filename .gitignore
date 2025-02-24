@@ -5,7 +5,7 @@
 .idea/
 .idea/*
 .idea/workspace.xml
+.vscode
 *.exe
 *.out
 *.o
-
