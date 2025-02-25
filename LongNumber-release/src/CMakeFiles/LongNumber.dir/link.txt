@@ -1,1 +1,0 @@
-/usr/bin/c++ -fPIC -O3 -DNDEBUG -shared -Wl,-soname,libLongNumber.so -o libLongNumber.so CMakeFiles/LongNumber.dir/LongNumber.cpp.o 

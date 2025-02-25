@@ -1,4 +1,7 @@
 cmake_minimum_required(VERSION 3.0)
+
+add_compile_options(-O2 -O3)
+
 project(LongNumber)
 find_package(GTest)
 
