@@ -4,7 +4,7 @@ find_package(GTest)
 
 set(CMAKE_CXX_STANDARD 17)
 add_subdirectory(src)
-add_subdirectory(googletest)
+add_subdirectory(googletest-main)
 include(GoogleTest)
 add_executable(tests
         my_tests/bool_test.cpp
